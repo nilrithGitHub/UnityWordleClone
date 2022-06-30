@@ -5,6 +5,11 @@ mergeInto(LibraryManager.library, {
         if (navigator.clipboard && navigator.clipboard.writeText) {
             navigator.clipboard.writeText(toCopy).then(function () {
                 console.debug("Copied to clipboard navigator: " + toCopy);
+                
+                const navUrl = 'https://www.facebook.com/sharer/sharer.php?u=' + 'https://github.com/knoldus/angular-facebook-twitter.git';
+                window.open(navUrl , '_blank');
+
+
             }, function (error) {
                 console.error("Failed to copy to clipboard navigator", error);
             });
@@ -40,8 +45,9 @@ mergeInto(LibraryManager.library, {
         };
         if (isMobileOrTablet() && navigator.share) {
             navigator.share({
-                title: 'Wordle Clone',
-                text: toCopy
+                title: 'Test Share',
+                text: toCopy,
+                url: 'https://62bd241765956432cce02ce2--testeverything.netlify.app',
             });
         }
     }

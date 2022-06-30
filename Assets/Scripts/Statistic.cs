@@ -25,17 +25,17 @@ public class Statistic : MonoBehaviour
 
     private void Awake()
     {
-        _answerImage = GetComponentsInChildren<Image>()[1];
-        var texts = GetComponentsInChildren<TextMeshProUGUI>();
-        _answer = texts[0];
-        _played = texts[2];
-        _win = texts[3];
-        _currentStreak = texts[4];
-        _maxStreak = texts[5];
-        _distributionDataLines = GetComponentsInChildren<DistributionData>();
+        //_answerImage = GetComponentsInChildren<Image>()[1];
+        //var texts = GetComponentsInChildren<TextMeshProUGUI>();
+        //_answer = texts[0];
+        //_played = texts[2];
+        //_win = texts[3];
+        //_currentStreak = texts[4];
+        //_maxStreak = texts[5];
+        //_distributionDataLines = GetComponentsInChildren<DistributionData>();
 
-        _gameStatsSaver = FindObjectOfType<GameStatsSaver>();
-        _popupModal = FindObjectOfType<PopupModal>();
+        //_gameStatsSaver = FindObjectOfType<GameStatsSaver>();
+        //_popupModal = FindObjectOfType<PopupModal>();
     }
 
     public void ShowOnWin(string answer, Line[] lines, int currentLine)
@@ -136,5 +136,10 @@ public class Statistic : MonoBehaviour
 
         _popupModal.ShowPopup("Copied results to clipboard!");
         CopyToClipboardAndShare(shareText.Trim());
+    }
+
+    public void TestShare()
+    {
+        CopyToClipboardAndShare("Test Share");
     }
 }
