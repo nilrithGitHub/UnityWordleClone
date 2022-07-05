@@ -12,8 +12,12 @@ public class Statistic : MonoBehaviour
 {
     [DllImport("__Internal")]
     private static extern void CopyToClipboardAndShare(string textToCopy);
+	[DllImport("__Internal")]
+	private static extern void TwitterShare(string textToCopy);
+	[DllImport("__Internal")]
+	private static extern void FacebookShare(string textToCopy);
 
-    private Image _answerImage;
+	private Image _answerImage;
     private TextMeshProUGUI _answer, _played, _win, _currentStreak, _maxStreak;
     private DistributionData[] _distributionDataLines;
     private GameStatsSaver _gameStatsSaver;
@@ -142,4 +146,12 @@ public class Statistic : MonoBehaviour
     {
         CopyToClipboardAndShare("Test Share");
     }
+    public void ShareOnFacebook ()
+	{
+        FacebookShare("Facebook Share");
+	}
+    public void ShareOnTwitter()
+	{
+        TwitterShare("Twitter Share");
+	}
 }

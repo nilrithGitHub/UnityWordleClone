@@ -403,7 +403,7 @@ PlayerSettings:
   openGLRequireES31AEP: 0
   openGLRequireES32: 0
   m_TemplateCustomTags:
-    HIDE_FULL_SCREEN_BUTTON: 1
+    HIDE_FULL_SCREEN_BUTTON: 
   mobileMTRendering:
     Android: 1
     iPhone: 1
@@ -652,7 +652,7 @@ PlayerSettings:
   webGLDebugSymbols: 0
   webGLEmscriptenArgs: 
   webGLModulesDirectory: 
-  webGLTemplate: PROJECT:Better2020
+  webGLTemplate: PROJECT:360Room
   webGLAnalyzeBuildSize: 0
   webGLUseEmbeddedResources: 0
   webGLCompressionFormat: 2

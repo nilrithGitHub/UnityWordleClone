@@ -30,8 +30,9 @@ public class SampleWebView : MonoBehaviour
     public string Url;
     public Text status;
     WebViewObject webViewObject;
+    public bool loadUrlOnStart;
 
-    IEnumerator Start()
+    IEnumerator StartWebview()
     {
         //Url = Url.Replace("match?v=", "embed/");
         webViewObject = (new GameObject("WebViewObject")).AddComponent<WebViewObject>();
@@ -149,25 +150,30 @@ public class SampleWebView : MonoBehaviour
 
         //webViewObject.SetScrollbarsVisibility(true);
 
-        webViewObject.SetMargins(5, 100, 5, Screen.height / 4);
-        webViewObject.SetTextZoom(100);  // android only. cf. https://stackoverflow.com/questions/21647641/android-webview-set-font-size-system-default/47017410#47017410
-        webViewObject.SetVisibility(true);
+       // webViewObject.SetMargins(5, 100, 5, Screen.height / 4);
+      
+
+        //if (loadUrlOnStart)
+        //{
+            webViewObject.SetMargins(50, 100, 50, Screen.height / 4);
+            webViewObject.SetTextZoom(100);  // android only. cf. https://stackoverflow.com/questions/21647641/android-webview-set-font-size-system-default/47017410#47017410
+            webViewObject.SetVisibility(true);
 
 #if !UNITY_WEBPLAYER && !UNITY_WEBGL
-        if (Url.StartsWith("http")) {
-            webViewObject.LoadURL(Url.Replace(" ", "%20"));
-        } else {
-            var exts = new string[]{
-                ".jpg",
-                ".js",
-                ".html"  // should be last
-            };
-            foreach (var ext in exts) {
-                var url = Url.Replace(".html", ext);
-                var src = System.IO.Path.Combine(Application.streamingAssetsPath, url);
-                var dst = System.IO.Path.Combine(Application.persistentDataPath, url);
-                byte[] result = null;
-                if (src.Contains("://")) {  // for Android
+            if (Url.StartsWith("http")) {
+                webViewObject.LoadURL(Url.Replace(" ", "%20"));
+            } else {
+                var exts = new string[]{
+                    ".jpg",
+                    ".js",
+                    ".html"  // should be last
+                };
+                foreach (var ext in exts) {
+                    var url = Url.Replace(".html", ext);
+                    var src = System.IO.Path.Combine(Application.streamingAssetsPath, url);
+                    var dst = System.IO.Path.Combine(Application.persistentDataPath, url);
+                    byte[] result = null;
+                    if (src.Contains("://")) {  // for Android
 #if UNITY_2018_4_OR_NEWER
                     // NOTE: a more complete code that utilizes UnityWebRequest can be found in https://github.com/gree/unity-webview/commit/2a07e82f760a8495aa3a77a23453f384869caba7#diff-4379160fa4c2a287f414c07eb10ee36d
                     var unityWebRequest = UnityWebRequest.Get(src);
@@ -189,69 +195,100 @@ public class SampleWebView : MonoBehaviour
             }
         }
 #else
-        if (Url.StartsWith("http")) {
-            webViewObject.LoadURL(Url.Replace(" ", "%20"));
-        } else {
-            webViewObject.LoadURL("StreamingAssets/" + Url.Replace(" ", "%20"));
-        }
+            if (Url.StartsWith("http"))
+            {
+                webViewObject.LoadURL(Url.Replace(" ", "%20"));
+            }
+            else
+            {
+                webViewObject.LoadURL("StreamingAssets/" + Url.Replace(" ", "%20"));
+            }
 #endif
+        //}
         yield break;
     }
-
-    void OnGUI()
-    {
-        var x = 10;
-
-        GUI.enabled = webViewObject.CanGoBack();
-        if (GUI.Button(new Rect(x, 10, 80, 80), "<")) {
-            webViewObject.GoBack();
+    public void Open()
+	{
+        var g = GameObject.Find("WebViewObject");
+        if (g == null)
+        {
+            StartCoroutine(StartWebview());
         }
-        GUI.enabled = true;
-        x += 90;
-
-        GUI.enabled = webViewObject.CanGoForward();
-        if (GUI.Button(new Rect(x, 10, 80, 80), ">")) {
-            webViewObject.GoForward();
-        }
-        GUI.enabled = true;
-        x += 90;
-
-        if (GUI.Button(new Rect(x, 10, 80, 80), "r")) {
-            webViewObject.Reload();
-        }
-        x += 90;
-
-        GUI.TextField(new Rect(x, 10, 180, 80), "" + webViewObject.Progress());
-        x += 190;
-
-        if (GUI.Button(new Rect(x, 10, 80, 80), "*")) {
-            var g = GameObject.Find("WebViewObject");
-            if (g != null) {
-                Destroy(g);
-            } else {
-                StartCoroutine(Start());
-            }
-        }
-        x += 90;
-
-        if (GUI.Button(new Rect(x, 10, 80, 80), "c")) {
-            Debug.Log(webViewObject.GetCookies(Url));
-        }
-        x += 90;
-
-        if (GUI.Button(new Rect(x, 10, 80, 80), "x")) {
-            webViewObject.ClearCookies();
-        }
-        x += 90;
-
-        if (GUI.Button(new Rect(x, 10, 80, 80), "D")) {
-            webViewObject.SetInteractionEnabled(false);
-        }
-        x += 90;
-
-        if (GUI.Button(new Rect(x, 10, 80, 80), "E")) {
-            webViewObject.SetInteractionEnabled(true);
-        }
-        x += 90;
     }
+    public void Close()
+	{
+        var g = GameObject.Find("WebViewObject");
+        if (g != null)
+        {
+            Destroy(g);
+        }
+    }
+    public void Toggle ()
+	{
+        var g = GameObject.Find("WebViewObject");
+        if (g != null)
+        {
+            Destroy(g);
+        }
+        else
+        {
+            StartCoroutine(StartWebview());
+        }
+    }
+    //void OnGUI()
+    //{
+    //    var x = 10;
+
+    //    GUI.enabled = webViewObject.CanGoBack();
+    //    if (GUI.Button(new Rect(x, 10, 80, 80), "<")) {
+    //        webViewObject.GoBack();
+    //    }
+    //    GUI.enabled = true;
+    //    x += 90;
+
+    //    GUI.enabled = webViewObject.CanGoForward();
+    //    if (GUI.Button(new Rect(x, 10, 80, 80), ">")) {
+    //        webViewObject.GoForward();
+    //    }
+    //    GUI.enabled = true;
+    //    x += 90;
+
+    //    if (GUI.Button(new Rect(x, 10, 80, 80), "r")) {
+    //        webViewObject.Reload();
+    //    }
+    //    x += 90;
+
+    //    GUI.TextField(new Rect(x, 10, 180, 80), "" + webViewObject.Progress());
+    //    x += 190;
+
+    //    if (GUI.Button(new Rect(x, 10, 80, 80), "*")) {
+    //        var g = GameObject.Find("WebViewObject");
+    //        if (g != null) {
+    //            Destroy(g);
+    //        } else {
+    //            StartCoroutine(StartWebview());
+    //        }
+    //    }
+    //    x += 90;
+
+    //    if (GUI.Button(new Rect(x, 10, 80, 80), "c")) {
+    //        Debug.Log(webViewObject.GetCookies(Url));
+    //    }
+    //    x += 90;
+
+    //    if (GUI.Button(new Rect(x, 10, 80, 80), "x")) {
+    //        webViewObject.ClearCookies();
+    //    }
+    //    x += 90;
+
+    //    if (GUI.Button(new Rect(x, 10, 80, 80), "D")) {
+    //        webViewObject.SetInteractionEnabled(false);
+    //    }
+    //    x += 90;
+
+    //    if (GUI.Button(new Rect(x, 10, 80, 80), "E")) {
+    //        webViewObject.SetInteractionEnabled(true);
+    //    }
+    //    x += 90;
+    //}
 }
