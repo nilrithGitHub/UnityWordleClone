@@ -142,16 +142,5 @@ public class Statistic : MonoBehaviour
         CopyToClipboardAndShare(shareText.Trim());
     }
 
-    public void TestShare()
-    {
-        CopyToClipboardAndShare("Test Share");
-    }
-    public void ShareOnFacebook ()
-	{
-        FacebookShare("Facebook Share");
-	}
-    public void ShareOnTwitter()
-	{
-        TwitterShare("Twitter Share");
-	}
+    
 }
