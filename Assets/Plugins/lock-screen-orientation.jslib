@@ -16,7 +16,7 @@ mergeInto(LibraryManager.library, {
         else{
             console.log('Simple Orientation locked');
         }
-    }
+    },
 
     IsMobile: function(){
          return UnityLoader.SystemInfo.mobile;

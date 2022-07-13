@@ -235,6 +235,17 @@ public class SampleWebView : MonoBehaviour
             StartCoroutine(StartWebview());
         }
     }
+    public void Toggle_Youtube ()
+	{
+        //Url = "https://www.youtube.com/embed/dQw4w9WgXcQ";
+        Url = "https://youtu.be/embed/bkUkxMTGMcE";
+        Toggle();
+	}
+    public void Toggle_PDF ()
+	{
+        Url = "https://drive.google.com/file/d/1Xuh4BnlOyQQaCIZVsWXC9nm3OprTRejO/preview";
+        Toggle();
+	}
     //void OnGUI()
     //{
     //    var x = 10;
