@@ -155,7 +155,7 @@ public class SampleWebView : MonoBehaviour
 
         //if (loadUrlOnStart)
         //{
-            webViewObject.SetMargins(50, 100, 50, Screen.height / 4);
+            webViewObject.SetMargins(50, Screen.height / 4, 50, Screen.height / 4);
             webViewObject.SetTextZoom(100);  // android only. cf. https://stackoverflow.com/questions/21647641/android-webview-set-font-size-system-default/47017410#47017410
             webViewObject.SetVisibility(true);
 
@@ -237,8 +237,8 @@ public class SampleWebView : MonoBehaviour
     }
     public void Toggle_Youtube ()
 	{
-        //Url = "https://www.youtube.com/embed/dQw4w9WgXcQ";
-        Url = "https://youtu.be/embed/bkUkxMTGMcE";
+        Url = "https://www.youtube.com/embed/dQw4w9WgXcQ?enablejsapi=1?autoplay=1";
+        //Url = "https://youtu.be/embed/bkUkxMTGMcE";
         Toggle();
 	}
     public void Toggle_PDF ()
