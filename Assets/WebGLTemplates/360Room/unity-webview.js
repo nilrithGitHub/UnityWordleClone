@@ -2,7 +2,7 @@ var unityWebView =
 {
     loaded: [],
 
-    init : function (name) {
+    init: function (name) {
         $containers = $('.webviewContainer');
         if ($containers.length === 0) {
             $('<div style="position: absolute; left: 0px; width: 100%; height: 100%; top: 0px; pointer-events: none;"><div class="webviewContainer" style="overflow: hidden; position: relative; width: 100%; height: 100%; z-index: 1;"></div></div>')
@@ -12,41 +12,46 @@ var unityWebView =
         var clonedTop = parseInt($last.css('top')) - 100;
         var $clone = $last.clone().insertAfter($last).css('top', clonedTop + '%');
         var $iframe =
+<<<<<<< Updated upstream
             $('<iframe style="position:relative; width:100%; height100%; border-style:none; display:none; pointer-events:auto;" frameborder="0" allowFullScreen="true" webkitallowfullscreen="true" mozallowfullscreen="true"></iframe>')
             //$('<iframe style="position:relative; width:100%; height100%; border-style:none; src="https://www.youtube.com/embed/dQw4w9WgXcQ"; pointer-events:auto;"></iframe>')
+=======
+            $('<iframe style="position:relative; width:100%; height100%; border-style:none; display:none; pointer-events:auto;" allowFullScreen="true"></iframe>')
+                //$('<iframe style="position:relative; width:100%; height100%; border-style:none; src="https://www.youtube.com/embed/dQw4w9WgXcQ"; pointer-events:auto;"></iframe>')
+>>>>>>> Stashed changes
 
-            .attr('id', 'webview_' + name)
-            .appendTo($last)
-            .on('load', function () {
-                $(this).attr('loaded', 'true');
-                var contents = $(this).contents();
-                var w = $(this)[0].contentWindow;
-                contents.find('a').click(function (e) {
-                    var href = $.trim($(this).attr('href'));
-                    if (href.substr(0, 6) === 'unity:') {
-                        unityInstance.SendMessage(name, "CallFromJS", href.substring(6, href.length));
-                        e.preventDefault();
-                    } else {
-                        w.location.replace(href);
-                    }
-                });
-
-                contents.find('form').submit(function () {
-                    $this = $(this);
-                    var action = $.trim($this.attr('action'));
-                    if (action.substr(0, 6) === 'unity:') {
-                        var message = action.substring(6, action.length);
-                        if ($this.attr('method').toLowerCase() == 'get') {
-                            message += '?' + $this.serialize();
+                .attr('id', 'webview_' + name)
+                .appendTo($last)
+                .on('load', function () {
+                    $(this).attr('loaded', 'true');
+                    var contents = $(this).contents();
+                    var w = $(this)[0].contentWindow;
+                    contents.find('a').click(function (e) {
+                        var href = $.trim($(this).attr('href'));
+                        if (href.substr(0, 6) === 'unity:') {
+                            unityInstance.SendMessage(name, "CallFromJS", href.substring(6, href.length));
+                            e.preventDefault();
+                        } else {
+                            w.location.replace(href);
                         }
-                        unityInstance.SendMessage(name, "CallFromJS", message);
-                        return false;
-                    }
-                    return true;
-                });
+                    });
 
-                unityInstance.SendMessage(name, "CallOnLoaded", location.href);
-            });
+                    contents.find('form').submit(function () {
+                        $this = $(this);
+                        var action = $.trim($this.attr('action'));
+                        if (action.substr(0, 6) === 'unity:') {
+                            var message = action.substring(6, action.length);
+                            if ($this.attr('method').toLowerCase() == 'get') {
+                                message += '?' + $this.serialize();
+                            }
+                            unityInstance.SendMessage(name, "CallFromJS", message);
+                            return false;
+                        }
+                        return true;
+                    });
+
+                    unityInstance.SendMessage(name, "CallOnLoaded", location.href);
+                });
     },
 
     sendMessage: function (name, message) {
@@ -77,7 +82,7 @@ var unityWebView =
             this.iframe(name).hide();
     },
 
-    loadURL: function(name, url) {
+    loadURL: function (name, url) {
         this.iframe(name).attr('allowFullScreen', 'true');
         this.iframe(name).attr('webkitallowfullscreen', 'true');
         this.iframe(name).attr('mozallowfullscreen', 'true')
@@ -91,7 +96,7 @@ var unityWebView =
         if ($iframe.attr('loaded') === 'true') {
             $iframe[0].contentWindow.eval(js);
         } else {
-            $iframe.on('load', function(){
+            $iframe.on('load', function () {
                 $(this)[0].contentWindow.eval(js);
             });
         }
@@ -105,4 +110,45 @@ var unityWebView =
         return $('#webview_' + name);
     },
 
+    playYoutubeID: function (id) {
+        // 2. This code loads the IFrame Player API code asynchronously.
+        var tag = document.createElement('script');
+        tag.src = "https://www.youtube.com/iframe_api";
+        var firstScriptTag = document.getElementsByTagName('script')[0];
+        firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+        // 3. This function creates an <iframe> (and YouTube player)
+        //    after the API code downloads.
+        var player;
+        function onYouTubeIframeAPIReady() {
+            player = new YT.Player('player', {
+                height: '390',
+                width: '640',
+                videoId: id,
+                playerVars: {
+                    'playsinline': 1
+                },
+                events: {
+                    'onReady': onPlayerReady,
+                    'onStateChange': onPlayerStateChange
+                }
+            });
+        }
+        // 4. The API will call this function when the video player is ready.
+        function onPlayerReady(event) {
+            event.target.playVideo();
+        }
+        // 5. The API calls this function when the player's state changes.
+        //    The function indicates that when playing a video (state=1),
+        //    the player should play for six seconds and then stop.
+        var done = false;
+        function onPlayerStateChange(event) {
+            if (event.data == YT.PlayerState.PLAYING && !done) {
+                setTimeout(stopVideo, 6000);
+                done = true;
+            }
+        }
+        function stopVideo() {
+            player.stopVideo();
+        }
+    }
 };

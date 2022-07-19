@@ -22,4 +22,8 @@ mergeInto(LibraryManager.library, {
 	_gree_unity_webview_destroy: function(name) {
 		unityWebView.destroy(Pointer_stringify(name));
 	},
+
+	_playYoutubeID: function(id){
+		unityWebView.playYoutuebeID (Pointer_stringify(id));
+	},
 });
