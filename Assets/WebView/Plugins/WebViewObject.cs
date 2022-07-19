@@ -377,7 +377,7 @@ public class WebViewObject : MonoBehaviour
     [DllImport("__Internal")]
     private static extern void _gree_unity_webview_destroy(string name);
     [DllImport("__Internal")]
-    private static extern void _playYoutubeID(string id);
+    private static extern void _gree_unity_playYoutubeID(string id);
 #endif
 
     public static bool IsWebViewAvailable()
@@ -861,7 +861,7 @@ public class WebViewObject : MonoBehaviour
 	{
         if (string.IsNullOrEmpty(id))
             return;
-        _playYoutubeID(id);
+        _gree_unity_playYoutubeID(id);
 	}
 
     public void LoadHTML(string html, string baseUrl)
