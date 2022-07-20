@@ -24,7 +24,10 @@
       </div>
     </div>
     <div id="unity-fullscreen-button" style="display: none;"></div>
+    <div id="unity-exit-fullscreen-button" style="display: none;"></div>
+    <script src="unity-webview.js"></script>
     <script>
+      var inFullScreenMode = false;
       const hideFullScreenButton = "{{{ HIDE_FULL_SCREEN_BUTTON }}}";
       const buildUrl = "Build";
       const loaderUrl = buildUrl + "/{{{ LOADER_FILENAME }}}";
@@ -50,6 +53,7 @@
       const progressBarEmpty = document.querySelector("#unity-progress-bar-empty");
       const progressBarFull = document.querySelector("#unity-progress-bar-full");
       const fullscreenButton = document.querySelector("#unity-fullscreen-button");
+      const exitfullscreenButton = document.querySelector("#unity-exit-fullscreen-button");
       const spinner = document.querySelector('.spinner');
 
       const canFullscreen = (function() {
@@ -89,9 +93,42 @@
             if (!hideFullScreenButton) {
               fullscreenButton.style.display = "";
             }
+            
+            document.documentElement.addEventListener ('fullscreenchange', event => {
+              if (document.fullscreenElement) {
+                //console.log(`Element: ${document.fullscreenElement.id} entered fullscreen mode.`);
+                exitfullscreenButton.style.display = "";
+                fullscreenButton.style.display = "none";
+                inFullScreenMode = true;
+              } else {
+                //console.log('Leaving fullscreen mode.');
+                exitfullscreenButton.style.display = "none";
+                fullscreenButton.style.display = "";
+                inFullScreenMode = false;
+              }
+            });
+
             fullscreenButton.onclick = () => {
-              unityInstance.SetFullscreen(1);
+              //unityInstance.SetFullscreen(1);
+              var elem = document.documentElement;
+              if (elem.requestFullscreen) {
+                elem.requestFullscreen();
+              } else if (elem.webkitRequestFullscreen) { /* Safari */
+                elem.webkitRequestFullscreen();
+              } else if (elem.msRequestFullscreen) { /* IE11 */
+                elem.msRequestFullscreen();
+              }
             };
+
+            exitfullscreenButton.onclick = () => {
+              if (document.exitFullscreen) {
+                document.exitFullscreen();
+              } else if (document.webkitExitFullscreen) { /* Safari */
+                document.webkitExitFullscreen();
+              } else if (document.msExitFullscreen) { /* IE11 */
+                document.msExitFullscreen();
+              }
+            }
           }
         }).catch((message) => {
           alert(message);
@@ -99,6 +136,6 @@
       };
       document.body.appendChild(script);
     </script>
-    <script src="unity-webview.js"></script>
+    
   </body>
 </html>

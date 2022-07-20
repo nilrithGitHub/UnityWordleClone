@@ -239,8 +239,8 @@ public class SampleWebView : MonoBehaviour
 	{
         Url = "https://www.youtube.com/embed/dQw4w9WgXcQ?enablejsapi=1?autoplay=1";
         //Url = "https://youtu.be/embed/bkUkxMTGMcE";
-        //Toggle();
-        webViewObject.PlayYoutubeID("M7lc1UVf-VE");
+        Toggle();
+        //webViewObject.PlayYoutubeID("M7lc1UVf-VE");
 	}
     public void Toggle_PDF ()
 	{

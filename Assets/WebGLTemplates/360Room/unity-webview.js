@@ -1,25 +1,13 @@
 // 2. This code loads the IFrame Player API code asynchronously.
 var tag = document.createElement('script');
+tag.id = 'iframe-demo';
 tag.src = "https://www.youtube.com/iframe_api";
-var firstScriptTag = document.getElementsByTagName('script')[1];
+var firstScriptTag = document.getElementsByTagName('script')[0];
 firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
 // 3. This function creates an <iframe> (and YouTube player)
 //    after the API code downloads.
 var player;
 function onYouTubeIframeAPIReady() {
-    window.alert ("youtube ready.");
-    player = new YT.Player('player', {
-        height: '390',
-        width: '640',
-        videoId: 'M7lc1UVf-VE',
-        playerVars: {
-            'playsinline': 1
-        },
-        events: {
-            'onReady': onPlayerReady,
-            'onStateChange': onPlayerStateChange
-        }
-    });
 }
 // 4. The API will call this function when the video player is ready.
 function onPlayerReady(event) {
@@ -44,13 +32,7 @@ var unityWebView =
     loaded: [],
     playYoutubeID: function (id){
         window.alert ("play youtube.");
-        player = new YT.Player('player', {
-            height: '390',
-            width: '640',
-            videoId: id,
-            playerVars: {
-                'playsinline': 1
-            },
+        player = new YT.Player('webview_WebViewObject', {
             events: {
                 'onReady': onPlayerReady,
                 'onStateChange': onPlayerStateChange
